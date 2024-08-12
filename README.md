@@ -71,7 +71,6 @@ This endpoint is used to delete a task.
 1. Clone the repository.
 2. Install the dependencies by running `npm install`.
 3. Configure the AWS credentials in your environment.
-4. Deploy the project using the AWS Serverless Framework by running `sls deploy`.
 
 ## Technologies Used
 
