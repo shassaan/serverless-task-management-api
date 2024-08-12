@@ -1,5 +1,5 @@
 import { loginUser } from '../../src/handlers/users';
-import AuthService from '../../src/services/authService';
+import AuthService from '../../services/authService';
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 
 jest.mock('../../src/services/authService');

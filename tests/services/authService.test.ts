@@ -1,5 +1,5 @@
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import AuthService from '../../src/services/authService';
+import AuthService from '../../services/authService';
 
 jest.mock('aws-sdk', () => {
     const mCognitoIdentityServiceProvider = {

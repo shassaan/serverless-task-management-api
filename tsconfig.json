@@ -14,5 +14,5 @@
   },
   "include": [
     "src"
-  ]
+, "bin", "cdk.out", "infra", "infra/lib", "src/models", ", "handlers"services", "src/types", "src/utils"  ]
 }

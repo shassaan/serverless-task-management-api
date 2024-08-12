@@ -1,5 +1,5 @@
 import { register } from '../../src/handlers/auth';
-import AuthService from '../../src/services/authService';
+import AuthService from '../../services/authService';
 import { APIGatewayProxyEvent, Context, APIGatewayProxyResult } from 'aws-lambda';
 import AWSMock from 'aws-sdk-mock';
 import AWS from 'aws-sdk';

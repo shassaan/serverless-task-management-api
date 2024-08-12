@@ -1,5 +1,5 @@
 // userService.test.ts
-import { UserService } from '../../src/services/userService';
+import { UserService } from '../../services/userService';
 import { getCognitoUser } from '../../src/utils/cognitoHelper';
 import { CognitoUser } from 'amazon-cognito-identity-js';
 import { User } from '../../src/models/user';

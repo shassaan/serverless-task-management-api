@@ -20,13 +20,13 @@ export const createTask = async (event: APIGatewayEvent, context: Context, callb
   try {
     const { title, description } = JSON.parse(event.body || '{}');
     let task: Task = {
-      id: "",
+      id: Math.random().toString(36).substring(7),
       title: title,
       description: description,
       completed: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      userId: ""
+      userId: "test-user"
     };
     task = await taskService.createTask(task);
     callback(null, { statusCode: 200, body: JSON.stringify(task) });
