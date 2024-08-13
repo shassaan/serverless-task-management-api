@@ -2,9 +2,7 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": [
-      "es6"
-    ],
+    "lib": ["es6"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -12,7 +10,5 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": [
-    "src"
-, "bin", "cdk.out", "infra", "infra/lib", "src/models", ", "handlers"services", "src/types", "src/utils"  ]
+  "include": ["src"]
 }

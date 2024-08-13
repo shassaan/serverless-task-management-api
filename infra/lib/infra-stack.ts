@@ -20,8 +20,8 @@ export class InfraStack extends cdk.Stack {
       this,
       "CreateTaskFunction",
       {
-        code: lambda.Code.fromAsset("../src/handlers"),
-        handler: "tasks.createTask",
+        code: lambda.Code.fromAsset("../src"),
+        handler: "handlers/tasks.createTask",
         runtime: lambda.Runtime.NODEJS_20_X,
         architecture: lambda.Architecture.ARM_64,
         environment: {
@@ -36,8 +36,8 @@ export class InfraStack extends cdk.Stack {
       this,
       "RegisterUserFunction",
       {
-        code: lambda.Code.fromAsset("../src/handlers"),
-        handler: "auth.register",
+        code: lambda.Code.fromAsset("../src"),
+        handler: "handlers/auth.register",
         runtime: lambda.Runtime.NODEJS_20_X,
         architecture: lambda.Architecture.ARM_64,
       },
@@ -47,8 +47,8 @@ export class InfraStack extends cdk.Stack {
       this,
       "LoginFunction",
       {
-        code: lambda.Code.fromAsset("../src/handlers"),
-        handler: "users.loginUser",
+        code: lambda.Code.fromAsset("../src"),
+        handler: "handlers/users.loginUser",
         runtime: lambda.Runtime.NODEJS_20_X,
         architecture: lambda.Architecture.ARM_64,
       },
