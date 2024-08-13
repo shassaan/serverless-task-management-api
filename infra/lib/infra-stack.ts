@@ -15,7 +15,7 @@ export class InfraStack extends cdk.Stack {
     });
 
 
-
+    // lambda functions
     const createTaskFunction = new lambdaNodejs.NodejsFunction(
       this,
       "CreateTaskFunction",
@@ -32,23 +32,62 @@ export class InfraStack extends cdk.Stack {
 
     tasksTable.grantFullAccess(createTaskFunction);
 
+    const registerUserFunction = new lambdaNodejs.NodejsFunction(
+      this,
+      "RegisterUserFunction",
+      {
+        code: lambda.Code.fromAsset("../src/handlers"),
+        handler: "auth.register",
+        runtime: lambda.Runtime.NODEJS_20_X,
+        architecture: lambda.Architecture.ARM_64,
+      },
+    );
+
+    const loginFunction = new lambdaNodejs.NodejsFunction(
+      this,
+      "LoginFunction",
+      {
+        code: lambda.Code.fromAsset("../src/handlers"),
+        handler: "users.loginUser",
+        runtime: lambda.Runtime.NODEJS_20_X,
+        architecture: lambda.Architecture.ARM_64,
+      },
+    );
+
+
     // create cognito user pool
     const userPool = new cognito.UserPool(this, "tasksUserPool", {
       selfSignUpEnabled: true,
       signInAliases: { email: true },
     });
 
+    const auth = new apigateway.CognitoUserPoolsAuthorizer(this, 'tasksAuthorizer', {
+      cognitoUserPools: [userPool]
+    });
+
+
+
+    // APIs for tasks 
     const api = new apigateway.RestApi(this, "tasksapi", {
       restApiName: "Tasks Service",
       defaultCorsPreflightOptions: {
         allowOrigins: apigateway.Cors.ALL_ORIGINS,
         allowMethods: apigateway.Cors.ALL_METHODS,
-      },
-      defaultMethodOptions: {
-        authorizationType: apigateway.AuthorizationType.COGNITO,
       }
     });
+    const taskResource = api.root.addResource("tasks");
 
-    api.root.addMethod("POST", new apigateway.LambdaIntegration(createTaskFunction));
+    taskResource.addMethod("POST", new apigateway.LambdaIntegration(createTaskFunction), {
+      authorizer: auth,
+      authorizationType: apigateway.AuthorizationType.COGNITO
+    });
+
+
+
+    const authLoginResource = api.root.addResource("login");
+    authLoginResource.addMethod("POST", new apigateway.LambdaIntegration(loginFunction));
+
+    const authResource = api.root.addResource("signup");
+    authResource.addMethod("POST", new apigateway.LambdaIntegration(registerUserFunction));
   }
 }
