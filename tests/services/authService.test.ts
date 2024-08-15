@@ -21,7 +21,7 @@ describe('AuthService', () => {
 
     describe('registerUser', () => {
         it('should register a user successfully', async () => {
-            cognitoClientMock.signUp().promise = jest.fn().mockResolvedValueOnce({});
+             cognitoClientMock.signUp().promise= jest.fn().mockResolvedValueOnce({});
 
             await authService.registerUser('testuser', 'testpassword');
 

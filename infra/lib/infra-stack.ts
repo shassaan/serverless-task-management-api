@@ -4,6 +4,7 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as lambdaNodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as aws_ecr from "aws-cdk-lib/aws-ecr";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
 
 export class InfraStack extends cdk.Stack {
@@ -14,16 +15,17 @@ export class InfraStack extends cdk.Stack {
       partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
     });
 
-
+    const repo = aws_ecr.Repository.fromRepositoryName(this, "Repository", "cdk-hnb659fds-container-assets-011528268677-us-east-1")
     // lambda functions
-    const createTaskFunction = new lambdaNodejs.NodejsFunction(
+    const createTaskFunction = new lambda.Function(
       this,
       "CreateTaskFunction",
       {
-        code: lambda.Code.fromAsset("../src"),
-        handler: "handlers/tasks.createTask",
-        runtime: lambda.Runtime.NODEJS_20_X,
+        code: lambda.Code.fromEcrImage(repo, { tag: '0.0.1' }),
+        handler: lambda.Handler.FROM_IMAGE,
+        runtime: lambda.Runtime.FROM_IMAGE,
         architecture: lambda.Architecture.ARM_64,
+        memorySize: 3008,
         environment: {
           TABLE_NAME: tasksTable.tableName,
         },
@@ -31,26 +33,23 @@ export class InfraStack extends cdk.Stack {
     );
 
     tasksTable.grantFullAccess(createTaskFunction);
+    
+    const registerUserFunction = new lambda.Function(this, 'RegisterUserFunction', {
+      runtime: lambda.Runtime.FROM_IMAGE,  // or appropriate runtime
+      code: lambda.Code.fromEcrImage(repo, { tag: '0.0.1' }),
+      handler: lambda.Handler.FROM_IMAGE,
+      memorySize: 3008,
+    });
 
-    const registerUserFunction = new lambdaNodejs.NodejsFunction(
-      this,
-      "RegisterUserFunction",
-      {
-        code: lambda.Code.fromAsset("../src"),
-        handler: "handlers/auth.register",
-        runtime: lambda.Runtime.NODEJS_20_X,
-        architecture: lambda.Architecture.ARM_64,
-      },
-    );
-
-    const loginFunction = new lambdaNodejs.NodejsFunction(
+    const loginFunction = new lambda.Function(
       this,
       "LoginFunction",
       {
-        code: lambda.Code.fromAsset("../src"),
-        handler: "handlers/users.loginUser",
-        runtime: lambda.Runtime.NODEJS_20_X,
+        code: lambda.Code.fromEcrImage(repo, { tag: '0.0.1' }),
+        handler: lambda.Handler.FROM_IMAGE,
+        runtime: lambda.Runtime.FROM_IMAGE,
         architecture: lambda.Architecture.ARM_64,
+        memorySize: 3008,
       },
     );
 

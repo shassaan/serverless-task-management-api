@@ -9,17 +9,14 @@
     "deploy": "sls deploy",
     "test": "jest --coverage",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "postinstall": "npm run typings",
+    "typings": "typings install"
   },
   "author": "Your Name",
   "license": "MIT",
   "dependencies": {
-    "@aws-cdk/aws-cognito": "^1.204.0",
     "amazon-cognito-identity-js": "^6.3.12",
-    "aws-cdk": "^2.151.0",
-    "aws-cdk-lib": "^2.151.0",
-    "aws-sdk": "^2.100.0",
-    "aws-sdk-mock": "^6.1.1",
     "express": "^4.17.1",
     "serverless-http": "^2.0.0",
     "@types/jest": "^29.5.12",
@@ -38,8 +35,6 @@
     "serverless-offline": "^8.1.0",
     "ts-jest": "^29.2.4",
     "typescript": "^4.4.3",
-    "aws-cdk-lib": "2.151.0",
-    "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
   }
 }

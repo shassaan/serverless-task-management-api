@@ -1,6 +1,6 @@
-import { Task } from '../models/task';
-import TaskService from '../services/taskService';
-import { Request, Response } from '../types';
+import { Task } from './models/task';
+import TaskService from './services/taskService';
+import { Request, Response } from './types';
 import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
 
 

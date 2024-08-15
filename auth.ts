@@ -1,4 +1,4 @@
-import AuthService  from '../services/authService';
+import AuthService  from './services/authService';
 import { Context, APIGatewayProxyCallback, APIGatewayEvent } from 'aws-lambda';
 
 const authService = new AuthService();

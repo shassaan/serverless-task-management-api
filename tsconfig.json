@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es6",
     "module": "commonjs",
+    "moduleResolution": "node",
     "lib": ["es6"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "." 
   },
-  "include": ["src"]
+  "include": ["auth.ts", "tasks.ts", "users.ts"]
 }
