@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "dist",
-    "rootDir": "." 
+    "rootDir": "."
   },
-  "include": ["auth.ts", "tasks.ts", "users.ts"]
+  "include": ["infra/auth.ts", "infra/tasks.ts", "infra/users.ts"]
 }

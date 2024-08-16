@@ -7,7 +7,7 @@ class TaskService {
 
   constructor(tableName: string) {
     this.tableName = tableName;
-    this.dynamoDB = new DynamoDB.DocumentClient();
+    this.dynamoDB = new DynamoDB.DocumentClient({});
   }
 
   async getTasks(): Promise<Task[]> {
@@ -21,6 +21,8 @@ class TaskService {
   }
 
   async createTask(task: Task): Promise<Task> {
+    console.log('Creating task:', task);
+    console.log('Table name:', this.tableName);
     const params: DynamoDB.DocumentClient.PutItemInput = {
       TableName: this.tableName,
       Item: task,

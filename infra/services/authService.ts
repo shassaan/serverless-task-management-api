@@ -11,8 +11,7 @@ class AuthService {
     const params:SignUpRequest = {
       ClientId: process.env.COGNITO_CLIENT_ID || "",
       Username: username,
-      Password: password,
-      
+      Password: password
     };
     await this.cognitoClient.signUp(params).promise();
   }
@@ -23,7 +22,7 @@ class AuthService {
       ClientId: process.env.COGNITO_CLIENT_ID || "",
       AuthParameters: {
         USERNAME: username,
-        PASSWORD: password,
+        PASSWORD: password
       },
     };
 
