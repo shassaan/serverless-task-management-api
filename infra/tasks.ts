@@ -38,15 +38,14 @@ export const createTask = async (event: APIGatewayEvent, context: Context, callb
 
 export const updateTask = async (event: APIGatewayEvent, context: Context, callback: APIGatewayProxyCallback) => {
   try {
-    const { id } = event.pathParameters || {};
-    const { title, description } = JSON.parse(event.body || '{}');
+    const { id, title, description } = JSON.parse(event.body || '{}');
     let task: Task = {
       id: id || "",
       title: title,
       description: description,
       completed: false,
       updatedAt: new Date().toISOString(),
-      userId: ""
+      userId: "test-user"
     };
     task = await taskService.updateTask(task);
     callback(null, { statusCode: 200, body: JSON.stringify(task) });

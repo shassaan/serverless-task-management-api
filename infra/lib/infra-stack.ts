@@ -12,9 +12,9 @@ export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const tasksTable = new dynamodb.Table(this, "tasks", {
-      partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
-    });
+    // const tasksTable = new dynamodb.Table(this, "tasks", {
+    //   partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+    // });
 
     const repo = aws_ecr.Repository.fromRepositoryName(this, "Repository", "cdk-hnb659fds-container-assets-011528268677-us-east-1")
     // lambda functions
@@ -28,7 +28,7 @@ export class InfraStack extends cdk.Stack {
         architecture: lambda.Architecture.ARM_64,
         memorySize: 3008,
         environment: {
-          TABLE_NAME: tasksTable.tableName,
+          TABLE_NAME: "tasks",
         },
       },
     );
@@ -44,7 +44,7 @@ export class InfraStack extends cdk.Stack {
         architecture: lambda.Architecture.ARM_64,
         memorySize: 3008,
         environment: {
-          TABLE_NAME: tasksTable.tableName,
+          TABLE_NAME: "tasks",
         },
       },
     );
@@ -60,12 +60,12 @@ export class InfraStack extends cdk.Stack {
         architecture: lambda.Architecture.ARM_64,
         memorySize: 3008,
         environment: {
-          TABLE_NAME: tasksTable.tableName,
+          TABLE_NAME: "tasks",
         },
       },
     );
 
-    tasksTable.grantFullAccess(createTaskFunction);
+    // task.grantFullAccess(createTaskFunction);
     
     const registerUserFunction = new lambdaNodejs.NodejsFunction(this, 'RegisterUserFunction', {
       runtime: lambda.Runtime.NODEJS_20_X,  // or appropriate runtime
@@ -123,20 +123,20 @@ export class InfraStack extends cdk.Stack {
     });
 
 
-    taskResource.addResource("{id}");
-    taskResource.addMethod("PUT", new apigateway.LambdaIntegration(updateTaskFunction), {
+    const updateTaskResource = api.root.addResource("updatetasks");
+    updateTaskResource.addMethod("PUT", new apigateway.LambdaIntegration(updateTaskFunction), {
       authorizer: auth,
       authorizationType: apigateway.AuthorizationType.COGNITO,
       authorizationScopes: ["openid", "aws.cognito.signin.user.admin"],
     });
 
 
-    // const taskDeleteResource = taskResource.addResource("{id}");
-    // taskDeleteResource.addMethod("DELETE", new apigateway.LambdaIntegration(deleteTaskFunction), {
-    //   authorizer: auth,
-    //   authorizationType: apigateway.AuthorizationType.COGNITO,
-    //   authorizationScopes: ["openid", "aws.cognito.signin.user.admin"],
-    // });
+    const taskDeleteResource = api.root.addResource("{id}");
+    taskDeleteResource.addMethod("DELETE", new apigateway.LambdaIntegration(deleteTaskFunction), {
+      authorizer: auth,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      authorizationScopes: ["openid", "aws.cognito.signin.user.admin"],
+    });
 
 
 
